@@ -8,7 +8,7 @@ require BASE_PATH . 'Core/functions.php';
  require 'Core/Router.php';
 
 $router = new \Core\Router();
-require BASE_PATH . 'routes.php'
+require BASE_PATH . 'routes.php';
 
 $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
 

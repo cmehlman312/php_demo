@@ -84,7 +84,6 @@ class CarRepository implements ICarRepository
 
     public function findByDriverId($id)
     {
-        // TODO: Implement findByDriverId() method.
         $cars = $this->db->query("SELECT * FROM cars WHERE driver_assigned = $id")->fetchAll();
         if(!$cars){
             return null;
@@ -93,9 +92,8 @@ class CarRepository implements ICarRepository
         }
     }
 
-    public function updateDriverAssigned($carid, $driverid): bool|\PDOStatement
+    public function updateDriverAssigned($carid, $driverid): bool|``\PDOStatement
     {
-        // TODO: Implement updateAssignedDriver() method.
         $query = "UPDATE cars SET driver_assigned = :driver_assigned WHERE id = :id";
         $params = array('driver_assigned'=> $driverid, 'id'=> $carid);
         $car = $this->db->querywithparams($query, $params);
@@ -118,7 +116,6 @@ class CarRepository implements ICarRepository
     
     public function findWithDriver($id)
     {
-        // TODO: Implement findWithDriver() method.
         $cars = $this->db->query("SELECT C.*, D.name as 'driver' FROM cars C LEFT JOIN drivers D ON C.driver_assigned = D.id WHERE id = $id")->fetch();
         if(!$cars){
             return null;
