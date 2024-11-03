@@ -1,6 +1,4 @@
-
 run docker-compose build
 run docker-compose up
-go to http://localhost:8888/seeddb.php 
-once tables are created use app form http://locahost:8888
 
+go to http://localhost/seeddb.php - this will create the car and driver tables
