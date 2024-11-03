@@ -1,14 +1,15 @@
 <?php
 
 use Core\Validator;
+use repository\CarRepository;
+use entities\Car;
 
-require base_path('Core/Database.php');
 require base_path('Core/Validator.php');
+require base_path('Interfaces/ICarRepository.php');
+require base_path('repository/CarRepository.php');
+require base_path('entities/Car.php');
 
-$config = require base_path('config.php');
-$db = new Database($config['database']);
-
-
+$constants = require base_path('config.php');
 
 if($_SERVER['REQUEST_METHOD']==='GET'){
 
@@ -18,22 +19,17 @@ if($_SERVER['REQUEST_METHOD']==='GET'){
     parse_str($parts['query'], $query);
     $id = $query['id'];
 
-    $query = "SELECT * FROM cars WHERE id = :id";
-    $params = array('id' => $id);
-    $car = $db->querywithparams($query, $params)->fetch();
+    $carrepository = new CarRepository();
+    $car = $carrepository->find($id);
 
-
-
-    // require view('notes/create.view.php');
     view("cars/edit.view.php", [
         'heading' => 'Edit Car',
         'errors' => [],
         'car' => $car,
+        'constants' => $constants,
     ]);
 
 }
-
-
 
 if ($_SERVER['REQUEST_METHOD']==='POST') {
 
@@ -69,9 +65,16 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         $cleanColor = htmlspecialchars($color);
         $cleanTransmission = htmlspecialchars($transmission);
 
-        $query = "UPDATE cars SET make=:make, model=:model, year=:year, color=:color, transmission = :transmission WHERE id = :id";
-        $params = array('make'=> $cleanMake, 'model'=>$cleanModel, 'year'=>$cleanYear, 'color'=>$cleanColor, 'transmission'=>$cleanTransmission, 'id'=>$_POST['id'] );
-        $db->querywithparams($query, $params);
+        $car = new Car();
+        $car->setId($_POST['id']);
+        $car->setMake($cleanMake);
+        $car->setModel($cleanModel);
+        $car->setYear($cleanYear);
+        $car->setColor($cleanColor);
+        $car->setTransmission($cleanTransmission);
+
+        $carrepository = new CarRepository();
+        $carrepository->update($car);
 
         header('location: /cars');
         die();

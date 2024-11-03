@@ -1,13 +1,19 @@
 <?php
 
-use Core\Validator;
+use repository\DriverRepository;
+use repository\CarRepository;
 
-require base_path('Core/Database.php');
+require base_path('Interfaces/IDriverRepository.php');
+require base_path('repository/DriverRepository.php');
+require base_path('Interfaces/ICarRepository.php');
+require base_path('repository/CarRepository.php');
+require base_path('entities/Car.php');
+
+$constants = require base_path('config.php');
+
 require base_path('Core/Validator.php');
 
-$config = require base_path('config.php');
-$db = new Database($config['database']);
-
+$carrepository = new CarRepository();
 
 if($_SERVER['REQUEST_METHOD']==='GET'){
 
@@ -17,27 +23,16 @@ if($_SERVER['REQUEST_METHOD']==='GET'){
     parse_str($parts['query'], $query);
     $id = $query['id'];
 
+    $car = $carrepository->find($id);
 
-    $query = "SELECT C.id, C.make, C.model, C.year, C.color, C.transmission, D.`name` as driver_assigned
-            FROM cars C
-            LEFT JOIN drivers D ON C.driver_assigned = D.id
-            WHERE C.id = :id";
 
-//    $query = "SELECT * FROM cars WHERE id = :id";
-    $params = array('id' => $id);
-    $car = $db->querywithparams($query, $params)->fetch();
-
-    if($car['transmission'] === 'Automatic'){
-        $query = "SELECT * FROM drivers";
-        $drivers = $db->query($query)->fetchAll();
-    }
-    else{
-        $query = "SELECT * FROM drivers WHERE drivemanual = :drivemanual";
-        $params = array('drivemanual' => 1);
-        $drivers = $db->querywithparams($query, $params)->fetchAll();
+    $drivemanual = 0;
+    if($car['transmission'] == 'Automatic'){
+        $drivemanual = 1;
     }
 
-
+    $driverrepository = new DriverRepository();
+    $drivers = $driverrepository->findByDriveManual($drivemanual);
 
     view("assignments/edit.view.php", [
         'heading' => 'Edit Assigned Driver',
@@ -52,12 +47,10 @@ if($_SERVER['REQUEST_METHOD']==='GET'){
 if ($_SERVER['REQUEST_METHOD']==='POST') {
 
 
-    $id = $_POST['id'];
+    $carid = $_POST['id'];
     $driverid = $_POST['driverid'];
 
-    $query = "UPDATE cars SET driver_assigned=:driverassigned WHERE id = :id";
-    $params = array('id'=>$id, 'driverassigned'=>$driverid );
-    $db->querywithparams($query, $params);
+    $carrepository->updateDriverAssigned($carid, $driverid);
 
 
     header('location: /assignments');

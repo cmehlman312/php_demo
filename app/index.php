@@ -7,8 +7,6 @@ require BASE_PATH . 'Core/functions.php';
 // require 'Core/Database.php';
  require 'Core/Router.php';
 
-;
-
 $router = new \Core\Router();
 require BASE_PATH . 'routes.php'
 

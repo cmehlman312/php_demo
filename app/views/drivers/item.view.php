@@ -6,18 +6,47 @@
             <p class="mb-6">
                 <a href="/drivers" class='text-blue-500 hover:underline'>Go back...</a>
             </p>
-            <p>
-                <?= $driver['name'] . ' '. $driver['experience'] . ' '. $driver['drivemanual']?>
-            </p>
-                <button onclick="document.querySelector('#deleteDriver').submit()" class="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Delete</button>
-            <button onclick="document.location.href='/driver/edit?id=<?= $driver['id'] ?>'" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Edit</button>
 
-            <form id="deleteDriver"  action="/driver" method="POST" >
-                <input type="hidden" name="_method" value='DELETE'/>
-                <input type="hidden" name="id" value="<?= $driver['id'] ?>" readonly/>
-            </form>
+            <section>
+                <div class="px-4 sm:px-0">
+                    <h3 class="text-base/7 font-semibold text-gray-900">Details</h3>
+                </div>
+                <div class="<?= $constants['description_list']['container'] ?>">
+                    <dl class="<?= $constants['description_list']['dl'] ?>">
+                        <div class="<?= $constants['description_list']['div'] ?>">
+                            <dt class="<?= $constants['description_list']['dt'] ?>">Name</dt>
+                            <dd class="<?= $constants['description_list']['dd'] ?>"><?= $driver['name'] ?></dd>
+                        </div>
+                        <div class="<?= $constants['description_list']['div'] ?>">
+                            <dt class="<?= $constants['description_list']['dt'] ?>">Years Driving</dt>
+                            <dd class="<?= $constants['description_list']['dd'] ?>"><?= $driver['experience'] ?></dd>
+                        </div>
+                        <div class="<?= $constants['description_list']['div'] ?>">
+                            <dt class="<?= $constants['description_list']['dt'] ?>">Drive Manual?</dt>
+                            <dd class="<?= $constants['description_list']['dd'] ?>"><?= $driver['drivemanual'] ? 'Yes': 'No' ?></dd>
+                        </div>
+                    </dl>
+                </div>
+                <p class="ml-2 mt-2">
+                    <button type="button" class="<?= $constants['button_cancel'] ?>" onclick="document.location.href='/drivers'">Cancel</button>
+                    <button onclick="document.querySelector('#deleteDriver').submit()" class="<?= $constants['button_delete'] ?>">Delete</button>
+                    <button onclick="document.location.href='/driver/edit?id=<?= $driver['id'] ?>'" class="<?= $constants['button_edit'] ?>">Edit</button>
+                </p>
 
+                <form id="deleteDriver"  action="/driver" method="POST" >
+                    <input type="hidden" name="_method" value='DELETE'/>
+                    <input type="hidden" name="id" value="<?= $driver['id'] ?>" readonly/>
+                </form>
+            </section>
 
+            <section class="mt-6">
+            <?php if ($cars ?? false) : ?>
+            <h2>Cars assigned to this driver:</h2>
+                <?php foreach ($cars as $car) : ?>
+                    <li> <?= $car['make'] . ' ' . $car['model'] ?></li>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            </section>
         </div>
     </main>
 <?php require base_path('views/partials/footer.php') ?>

@@ -1,10 +1,14 @@
 <?php
 
-require base_path('Core/Database.php');
-$config = require base_path('config.php');
-$db = new Database($config['database']);
+use repository\DriverRepository;
 
-$drivers = $db->query("select * from drivers")->fetchAll();
+require base_path('Interfaces/IDriverRepository.php');
+require base_path('repository/DriverRepository.php');
+
+$constants = require base_path('config.php');
+
+$driverrepository = new DriverRepository();
+$drivers = $driverrepository->getAll();
 
 view("drivers/index.view.php", [
     'heading' => 'Drivers at your service',

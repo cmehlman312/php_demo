@@ -1,53 +1,6 @@
 <?php
 
-use Core\Database;
-use entities\Car;
-use \repository\CarRepository;
-
-const BASE_PATH = __DIR__.'/../';
-require BASE_PATH . 'Core/Database.php';
-require BASE_PATH . 'Core/Validator.php';
-require BASE_PATH . 'Core/functions.php';
-
-require BASE_PATH  . 'Interfaces/ICarRepository.php';
-require BASE_PATH . 'repository/CarRepository.php';
-require BASE_PATH  . 'entities/Car.php';
-
-
-
-$config = require BASE_PATH . 'config.php';
-$db = new Database($config['database']);
-
- $queryDriver = "CREATE TABLE IF NOT EXISTS `drivers` (
-           `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-           `name` varchar(255) NOT NULL,
-           `experience` int(11) NOT NULL,
-           `drivemanual` tinyint(1) NOT NULL,
-           UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
-
- $db->query($queryDriver);
-
-$queryCar = "CREATE TABLE IF NOT EXISTS `cars` (
-                        `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-                        `make` varchar(255) NOT NULL,
-                        `model` varchar(255) NOT NULL,
-                        `year` year(4) NOT NULL,
-                        `color` varchar(255) NOT NULL,
-                        `transmission` varchar(255) NOT NULL,
-                        `driver_assigned` bigint(20) unsigned DEFAULT NULL,
-                        UNIQUE KEY `id` (`id`),
-                        KEY `driver_assigned` (`driver_assigned`),
-                        CONSTRAINT `cars_drives_fk` FOREIGN KEY (`driver_assigned`) REFERENCES `drivers` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
-
-
-$db->query($queryCar);
-
-echo 'Created tables. You are ready to use the app.  Happy assigning to me!!!';
-
-
-$data = json_decode('[{"make":"Pontiac","model":"Gemini","year":1987,"color":"Fuscia","transmission":"Automatic"},
+return [{"make":"Pontiac","model":"Gemini","year":1987,"color":"Fuscia","transmission":"Automatic"},
 {"make":"Pontiac","model":"Firefly","year":1986,"color":"Pink","transmission":"Manual"},
 {"make":"Volkswagen","model":"GTI","year":2009,"color":"Violet","transmission":"Manual"},
 {"make":"Cadillac","model":"DTS","year":2008,"color":"Indigo","transmission":"Automatic"},
@@ -96,13 +49,4 @@ $data = json_decode('[{"make":"Pontiac","model":"Gemini","year":1987,"color":"Fu
 {"make":"Hyundai","model":"Tucson","year":2008,"color":"Mauv","transmission":"Automatic"},
 {"make":"BMW","model":"M3","year":2003,"color":"Mauv","transmission":"Automatic"},
 {"make":"Daihatsu","model":"Rocky","year":1992,"color":"Khaki","transmission":"Automatic"},
-{"make":"Mazda","model":"B-Series","year":1996,"color":"Turquoise","transmission":"Manual"}]');
-
-
-//foreach ($data as $row) {
-////    dd($row);
-//    $car = new Car($row);
-//    dd($car);
-//    $carrepository = new CarRepository();
-//    $carrepository->create($car);
-//}
+{"make":"Mazda","model":"B-Series","year":1996,"color":"Turquoise","transmission":"Manual"}];

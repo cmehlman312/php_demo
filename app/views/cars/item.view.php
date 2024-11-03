@@ -2,22 +2,49 @@
 <?php require base_path('views/partials/nav.php') ?>
 <?php require base_path('views/partials/banner.php') ?>
     <main>
-        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <p class="mb-6">
                 <a href="/cars" class='text-blue-500 hover:underline'>Go back...</a>
             </p>
-            <p>
-                <?= $car['make'] . ' '. $car['model'] . ' '. $car['year'] . ' '. $car['color'] ?>
+
+        <div>
+            <div class="px-4 sm:px-0">
+                <h3 class="text-base/7 font-semibold text-gray-900">Details</h3>
+            </div>
+            <div class="<?= $constants['description_list']['container'] ?>">
+                <dl class="<?= $constants['description_list']['dl'] ?>">
+                    <div class="<?= $constants['description_list']['div'] ?>">
+                        <dt class="<?= $constants['description_list']['dt'] ?>">Make</dt>
+                        <dd class="<?= $constants['description_list']['dd'] ?>"><?= $car['make'] ?></dd>
+                    </div>
+                    <div class="<?= $constants['description_list']['div'] ?>">
+                        <dt class="<?= $constants['description_list']['dt'] ?>">Model</dt>
+                        <dd class="<?= $constants['description_list']['dd'] ?>"><?= $car['model'] ?></dd>
+                    </div>
+                    <div class="<?= $constants['description_list']['div'] ?>">
+                        <dt class="<?= $constants['description_list']['dt'] ?>">Year</dt>
+                        <dd class="<?= $constants['description_list']['dd'] ?>"><?= $car['year'] ?></dd>
+                    </div>
+                    <div class="<?= $constants['description_list']['div'] ?>">
+                        <dt class="<?= $constants['description_list']['dt'] ?>">Color</dt>
+                        <dd class="<?= $constants['description_list']['dd'] ?>"><?= $car['color'] ?></dd>
+                    </div>
+                    <div class="<?= $constants['description_list']['div'] ?>">
+                        <dt class="<?= $constants['description_list']['dt'] ?>">Transmission</dt>
+                        <dd class="<?= $constants['description_list']['dd'] ?>"><?= $car['transmission'] ?></dd>
+                    </div>
+                </dl>
+            </div>
+            <p class="ml-2 mt-2">
+                <button onclick="document.querySelector('#deleteCar').submit()" class="<?= $constants['button_delete'] ?>">Delete</button>
+                <button onclick="document.location.href='/car/edit?id=<?= $car['id'] ?>'" class="<?= $constants['button_edit'] ?>">Edit</button>
             </p>
-                <button onclick="document.querySelector('#deleteCar').submit()" class="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Delete</button>
-            <button onclick="document.location.href='/car/edit?id=<?= $car['id'] ?>'" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Edit</button>
 
             <form id="deleteCar"  action="/car" method="POST" >
                 <input type="hidden" name="_method" value='DELETE'/>
                 <input type="hidden" name="id" value="<?= $car['id'] ?>" readonly/>
             </form>
-
-
         </div>
+
+
     </main>
 <?php require base_path('views/partials/footer.php') ?>

@@ -1,12 +1,17 @@
 <?php
 
-require base_path('Core/Database.php');
-$config = require base_path('config.php');
-$db = new Database($config['database']);
+use repository\CarRepository;
 
-$cars = $db->query("select * from cars")->fetchAll();
+require base_path('Interfaces/ICarRepository.php');
+require base_path('repository/CarRepository.php');
+
+$constants = require base_path('config.php');
+
+$carrepository = new CarRepository();
+$cars = $carrepository->getAll();
 
 view("cars/index.view.php", [
     'heading' => 'Cars in the garage',
-    'cars' => $cars
+    'cars' => $cars,
+    'constants'=>$constants,
 ]);

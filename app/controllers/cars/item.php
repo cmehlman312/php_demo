@@ -1,16 +1,17 @@
 <?php
 
-require base_path('Core/Database.php');
+use repository\CarRepository;
 
-$config = require base_path('config.php');
-$db = new Database($config['database']);
+require base_path('Interfaces/ICarRepository.php');
+require base_path('repository/CarRepository.php');
 
-$heading = 'View Car';
+$constants = require base_path('config.php');
 
-    $id = $_GET['id'];
-    $car = $db->query('SELECT * FROM cars WHERE id = "' . $_GET['id'] . '"')->fetch();
+$carrepository = new CarRepository();
+$car = $carrepository->find($_GET['id']);
 
 view("cars/item.view.php", [
-    'heading' => 'Car',
-    'car' => $car
+    'heading' => 'View Car',
+    'car' => $car,
+    'constants' => $constants
 ]);

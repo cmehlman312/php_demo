@@ -51,6 +51,7 @@ class Router
         }
 
         $this->abort();
+        return false;
     }
 
     protected function abort($code = 404)

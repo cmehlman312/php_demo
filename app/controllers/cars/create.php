@@ -1,13 +1,15 @@
 <?php
 
 use Core\Validator;
+use repository\CarRepository;
+use entities\Car;
 
-require base_path('Core/Database.php');
 require base_path('Core/Validator.php');
+require base_path('Interfaces/ICarRepository.php');
+require base_path('repository/CarRepository.php');
+require base_path('entities/Car.php');
 
-$config = require base_path('config.php');
-$db = new Database($config['database']);
-
+$constants = require base_path('config.php');
 
 if ($_SERVER['REQUEST_METHOD']==='POST'){
 
@@ -33,11 +35,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
         $errors['color']='A color is required';
     }
 
-//    dd($errors);
-
-
     if(!empty($errors)){
-
         $transmission = $_POST['transmission'];
 
         $cleanMake= htmlspecialchars($make);
@@ -46,8 +44,15 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
         $cleanColor= htmlspecialchars($color);
         $cleanTransmission = htmlspecialchars($transmission);
 
-        $query = "INSERT INTO cars(make, model, year, color, transmission) VALUES('{$cleanMake}','{$cleanModel}','{$cleanYear}','{$cleanColor}','{$cleanTransmission}')";
-        $db->query($query);
+        $car = new Car();
+        $car->setMake($cleanMake);
+        $car->setModel($cleanModel);
+        $car->setYear($cleanYear);
+        $car->setColor($cleanColor);
+        $car->setTransmission($cleanTransmission);
+
+        $carRepository = new CarRepository();
+        $carRepository->create($car);
 
         header('location: /cars');
         die();
@@ -55,8 +60,9 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
 
 }
 
-// require view('notes/create.view.php');
+
 view("cars/create.view.php", [
     'heading' => 'Create Car',
-    'errors' => []
+    'errors' => [],
+    'constants' => $constants,
 ]);

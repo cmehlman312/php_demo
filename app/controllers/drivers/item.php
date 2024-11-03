@@ -1,16 +1,24 @@
 <?php
 
-require base_path('Core/Database.php');
+use repository\DriverRepository;
+use repository\CarRepository;
 
-$config = require base_path('config.php');
-$db = new Database($config['database']);
+require base_path('Interfaces/IDriverRepository.php');
+require base_path('repository/DriverRepository.php');
+require base_path('Interfaces/ICarRepository.php');
+require base_path('repository/CarRepository.php');
 
-//$heading = 'View Driver';
+$constants = require base_path('config.php');
 
-    $id = $_GET['id'];
-    $driver = $db->query('SELECT * FROM drivers WHERE id = "' . $_GET['id'] . '"')->fetch();
+$driverrepository = new DriverRepository();
+$driver = $driverrepository->getById($_GET['id']);
+
+$carrepository = new CarRepository();
+$cars = $carrepository->findByDriverId($_GET['id']);
 
 view("drivers/item.view.php", [
     'heading' => 'View Driver',
-    'driver' => $driver
+    'driver' => $driver,
+    'cars' => $cars,
+    'constants' => $constants,
 ]);

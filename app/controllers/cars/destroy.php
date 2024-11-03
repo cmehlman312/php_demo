@@ -1,11 +1,14 @@
 <?php
 
+use repository\CarRepository;
 
-require base_path('Core/Database.php');
-$config = require base_path('config.php');
-$db = new Database($config['database']);
+require base_path('Interfaces/ICarRepository.php');
+require base_path('repository/CarRepository.php');
 
-$db->query('DELETE FROM cars WHERE id = "'. $_POST['id'].'"');
+$constants = require base_path('config.php');
+
+$carrepository = new CarRepository();
+$carrepository->delete($_POST['id']);
 
 header('location: /cars');
 exit();

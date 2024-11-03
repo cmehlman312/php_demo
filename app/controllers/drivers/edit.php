@@ -1,12 +1,16 @@
 <?php
 
+
+
 use Core\Validator;
+use entities\Driver;
+use repository\DriverRepository;
 
-require base_path('Core/Database.php');
 require base_path('Core/Validator.php');
+require base_path('Interfaces/IDriverRepository.php');
+require base_path('repository/DriverRepository.php');
 
-$config = require base_path('config.php');
-$db = new Database($config['database']);
+$constants = require base_path('config.php');
 
 if($_SERVER['REQUEST_METHOD']==='GET'){
 
@@ -16,14 +20,14 @@ if($_SERVER['REQUEST_METHOD']==='GET'){
     parse_str($parts['query'], $query);
     $id = $query['id'];
 
-    $query = "SELECT * FROM drivers WHERE id = :id";
-    $params = array('id' => $id);
-    $driver = $db->querywithparams($query, $params)->fetch();
+    $driverrepository = new DriverRepository();
+    $driver = $driverrepository->getById($id);
 
     view("drivers/edit.view.php", [
         'heading' => 'Edit Driver',
         'errors' => [],
         'driver' => $driver,
+        'constants' => $constants,
     ]);
 
 }
@@ -50,9 +54,13 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         $cleanExperience = htmlspecialchars($experience);
         $cleanDriveManual = htmlspecialchars($drivemanual);
 
-        $query = "UPDATE drivers SET name=:name, experience=:experience, drivemanual=:drivemanual WHERE id = :id";
-        $params = array('name'=> $cleanName, 'experience'=>$cleanExperience, 'drivemanual'=>$cleanDriveManual, 'id'=>$_POST['id'] );
-        $db->querywithparams($query, $params);
+        $newDriver = new Driver();
+        $newDriver->setName($cleanName);
+        $newDriver->setYearsdriving($cleanExperience);
+        $newDriver->setDrivemanual($cleanDriveManual);
+
+        $driverrepository = new DriverRepository();
+        $driver = $driverrepository->update($newDriver);
 
         header('location: /drivers');
         die();

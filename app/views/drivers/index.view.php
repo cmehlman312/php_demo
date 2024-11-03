@@ -30,7 +30,7 @@
                             <?= $driver['drivemanual'] ? 'Either are good': 'Only Automatic'?>
                         </td>
                         <td class="px-2 py-4">
-                            <a href="/driver?id=<?= $driver['id'] ?>" class='text-blue-500 hover:underline'>Edit</a>
+                            <a href="/driver?id=<?= $driver['id'] ?>" class='text-blue-500 hover:underline'>View</a>
                         </td>
                     </tr>
                 <?php endforeach;?>

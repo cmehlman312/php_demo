@@ -2,18 +2,60 @@
 <?php require base_path('views/partials/nav.php') ?>
 <?php require base_path('views/partials/banner.php') ?>
     <main>
-        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <p class="mb-6">Here are the cars in the garage:</p>
 
-            <?php  foreach($cars as $car) : ?>
-                <li>
-                    <a href="/car?id=<?= $car['id'] ?>" class='text-blue-500 hover:underline'>
-                        <?= $car['year']  .' '. $car['color']  .' ' .  $car['make'] . ' '. $car['model']?>
-                    </a>    
-                 </li>
-            <?php endforeach;?>
+        <p class="mt-6 mb-6"><a href="/car/create" class="<?= $constants['button_create']?>">Create Car</a></p>
 
-            <p class="mt-6"><a href="/car/create" class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Create Car</a></p>
+        <div class="<?= $constants['table']['div']?>">
+            <table class="<?= $constants['table']['table']?>">
+                <thead class="<?= $constants['table']['thead']?>">
+                <tr>
+                    <th scope="col" class="<?= $constants['table']['th']?>">
+                        Year
+                    </th>
+                    <th scope="col" class="<?= $constants['table']['th']?>">
+                        Color
+                    </th>
+                    <th scope="col" class="<?= $constants['table']['th']?>">
+                        Make
+                    </th>
+                    <th scope="col" class="<?= $constants['table']['th']?>">
+                        Model
+                    </th>
+                    <th scope="col" class="<?= $constants['table']['th']?>">
+                        Transmission
+                    </th>
+                    <th scope="col" class="<?= $constants['table']['th']?>">
+                        <span class="sr-only">Edit</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    <?php  foreach($cars as $car) : ?>
+                        <tr class="<?= $constants['table']['tr']?>">
+                            <td class="<?= $constants['table']['td']?>">
+                                <?= $car['year'] ?>
+                            </td>
+                            <td class="<?= $constants['table']['td']?>">
+                                <?= $car['color'] ?>
+                            </td>
+                            <td class="<?= $constants['table']['td']?>">
+                                <?= $car['make'] ?>
+                            </td>
+                            <td class="<?= $constants['table']['td']?>">
+                                <?= $car['model'] ?>
+                            </td>
+                            <td class="<?= $constants['table']['td']?>">
+                                <?= $car['transmission'] ?>
+                            </td>
+                            <td class="<?= $constants['table']['td']?> text-right">
+                                <a href="/car?id=<?= $car['id'] ?>" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
+                            </td>
+                        </tr>
+                    <?php endforeach;?>
+
+                </tbody>
+            </table>
         </div>
+
     </main>
 <?php require base_path('views/partials/footer.php') ?>
