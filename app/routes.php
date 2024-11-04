@@ -2,15 +2,6 @@
 
 $router->get('/', 'index.php');
 
-//$router->get('/notes', 'notes/index.php');
-//$router->get('/note', 'notes/item.php');
-//$router->delete('/note', 'notes/index.php');
-//
-//$router->get('/note/create', 'notes/create.php');
-//$router->get('/note/edit', 'notes/edit.php');
-//$router->patch('/note', 'notes/update.php');
-
-
 $router->get('/cars', 'cars/index.php');
 $router->get('/car', 'cars/item.php');
 $router->delete('/car', 'cars/destroy.php');
